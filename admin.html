@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Budget Ledger</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-brand">Budget Ledger</div>
+    <nav class="topbar-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="reports.html" id="navReports">Reports</a>
+      <a href="loans.html" id="navLoans">Loans</a>
+      <a href="income.html" id="navIncome">Income</a>
+      <a href="admin.html" class="active">Admin</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="topbar-user">
+      <span class="badge badge-admin">Admin</span>
+      <button class="btn-ghost" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <h1>Manage users</h1>
+    <p class="lede">
+      Set each person's role. Editors and viewers only see the members you grant them below —
+      editors can edit those records, viewers can only view them. Everyone always keeps full access
+      to their own record.
+    </p>
+
+    <div id="adminContent">
+      <p class="muted-note">Loading users…</p>
+    </div>
+  </main>
+</div>
+
+<script src="api-bridge.js"></script>
+<script src="ui-helpers.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

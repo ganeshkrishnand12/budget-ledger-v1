@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account — Budget Ledger</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-brand">Budget Ledger</div>
+    <nav class="topbar-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="reports.html" id="navReports">Reports</a>
+      <a href="loans.html" id="navLoans">Loans</a>
+      <a href="income.html" id="navIncome">Income</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+      <a href="account.html" class="active">Account</a>
+    </nav>
+    <div class="topbar-user">
+      <span class="badge" id="roleBadge">…</span>
+      <button class="btn-ghost" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <h1>Account</h1>
+    <p class="lede">Your details and password.</p>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Profile</h2>
+      </div>
+      <p><strong id="profileName">—</strong></p>
+      <p class="muted-note" id="profileEmail">—</p>
+    </section>
+
+    <section class="panel" style="max-width:420px;">
+      <div class="panel-head">
+        <h2>Change password</h2>
+      </div>
+
+      <div class="status-banner" id="statusBanner"></div>
+
+      <form id="passwordForm" novalidate>
+        <div class="field">
+          <label for="currentPassword">Current password</label>
+          <div class="password-field">
+            <input type="password" id="currentPassword" autocomplete="current-password">
+            <button type="button" class="password-toggle" data-target="currentPassword" aria-label="Show password"></button>
+          </div>
+          <span class="field-error" id="currentPasswordError"></span>
+        </div>
+        <div class="field">
+          <label for="newPassword">New password</label>
+          <div class="password-field">
+            <input type="password" id="newPassword" autocomplete="new-password">
+            <button type="button" class="password-toggle" data-target="newPassword" aria-label="Show password"></button>
+          </div>
+          <span class="field-error" id="newPasswordError"></span>
+        </div>
+        <div class="field">
+          <label for="confirmNewPassword">Confirm new password</label>
+          <div class="password-field">
+            <input type="password" id="confirmNewPassword" autocomplete="new-password">
+            <button type="button" class="password-toggle" data-target="confirmNewPassword" aria-label="Show password"></button>
+          </div>
+          <span class="field-error" id="confirmNewPasswordError"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Update password</button>
+      </form>
+    </section>
+
+    <section class="panel danger-panel" style="max-width:420px;">
+      <div class="panel-head">
+        <h2>Delete account</h2>
+      </div>
+      <p class="muted-note">
+        This permanently removes your account, your categories, your budget plans, and every
+        expense you've logged. This can't be undone.
+      </p>
+
+      <div class="status-banner" id="deleteStatusBanner"></div>
+
+      <button class="btn-ghost danger-btn" id="showDeleteFormBtn">Delete my account</button>
+
+      <form id="deleteAccountForm" novalidate style="display:none; margin-top:16px;">
+        <div class="field">
+          <label for="deletePassword">Confirm your password</label>
+          <div class="password-field">
+            <input type="password" id="deletePassword" autocomplete="current-password">
+            <button type="button" class="password-toggle" data-target="deletePassword" aria-label="Show password"></button>
+          </div>
+          <span class="field-error" id="deletePasswordError"></span>
+        </div>
+        <button type="submit" class="btn danger-btn-solid">Permanently delete my account</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script src="api-bridge.js"></script>
+<script src="ui-helpers.js"></script>
+<script src="account.js"></script>
+</body>
+</html>

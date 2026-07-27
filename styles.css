@@ -1,0 +1,1262 @@
+/* ===========================================================
+   Budget Ledger — shared design tokens & styles
+   =========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0b1f1c;
+  --surface: #123028;
+  --surface-alt: #16382f;
+  --accent: #3ecf8e;
+  --accent-dim: #2b8f63;
+  --accent-warm: #d4a853;
+  --text: #ededE4;
+  --text-muted: #8fa69c;
+  --border: #24463b;
+  --danger: #e07a5f;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- Layout ---------- */
+
+.page {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 860px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+  .brand-panel {
+    min-height: 260px;
+    padding: 40px 32px;
+  }
+}
+
+/* ---------- Brand panel (left) ---------- */
+
+.brand-panel {
+  position: relative;
+  background: linear-gradient(180deg, #0e2621 0%, #0b1f1c 100%);
+  border-right: 1px solid var(--border);
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.brand-mark {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+.brand-mark::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.brand-copy {
+  z-index: 2;
+  max-width: 420px;
+}
+
+.brand-copy h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+
+.brand-copy p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.brand-foot {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  z-index: 2;
+}
+
+/* Ambient ledger-line animation */
+.ledger-lines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 64px;
+  opacity: 0.35;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+}
+
+.ledger-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 6px;
+  animation: drift 18s linear infinite;
+}
+
+.ledger-row span:last-child {
+  color: var(--accent-dim);
+}
+
+@keyframes drift {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ledger-row { animation: none; }
+}
+
+/* ---------- Form panel (right) ---------- */
+
+.form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.receipt-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px 32px;
+  position: relative;
+}
+
+/* Perforated "receipt" top edge */
+.receipt-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: radial-gradient(circle, var(--bg) 3px, transparent 3.5px);
+  background-size: 16px 8px;
+  background-repeat: repeat-x;
+  background-position: center top;
+}
+
+.receipt-card h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  margin: 0 0 6px;
+}
+
+.receipt-card .subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0 0 28px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 11px 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(62, 207, 142, 0.15);
+}
+
+.field-error {
+  display: block;
+  min-height: 16px;
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 6px;
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #08211a;
+  margin-top: 6px;
+}
+
+.btn-primary:hover {
+  background: #4fdc9c;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
+}
+
+.form-foot {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.form-foot a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-foot a:hover {
+  text-decoration: underline;
+}
+
+.status-banner {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  border: 1px solid;
+}
+
+.status-banner.show {
+  display: block;
+}
+
+.status-banner.success {
+  background: rgba(62, 207, 142, 0.1);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.status-banner.error {
+  background: rgba(224, 122, 95, 0.1);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Visible keyboard focus for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 2px;
+}
+
+/* ===========================================================
+   App shell (post-login pages: dashboard, admin, record)
+   =========================================================== */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.topbar-brand::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.topbar-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.topbar-nav a:hover,
+.topbar-nav a.active {
+  color: var(--text);
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.badge-admin   { color: var(--accent-warm); border-color: var(--accent-warm); }
+.badge-editor  { color: var(--accent);      border-color: var(--accent-dim); }
+.badge-viewer  { color: #8fb4d9;            border-color: #33556f; }
+.badge-member  { color: var(--text-muted);  border-color: var(--border); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--accent-warm);
+}
+
+.app-main {
+  flex: 1;
+  padding: 40px 32px;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.app-main h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 28px;
+  margin: 0 0 6px;
+}
+
+.app-main .lede {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0 0 32px;
+}
+
+/* ---------- Member cards ---------- */
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.member-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.member-card .member-name {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.member-card .member-email {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.member-card .member-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link-btn {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Admin table ---------- */
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.admin-table th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.role-select {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.grant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 260px;
+}
+
+.grant-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.grant-chip input {
+  accent-color: var(--accent);
+}
+
+.save-btn {
+  background: var(--accent);
+  color: #08211a;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #4fdc9c;
+}
+
+.muted-note {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ---------- Record page ---------- */
+
+.record-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 560px;
+}
+
+.record-card textarea {
+  width: 100%;
+  min-height: 160px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 12px;
+  resize: vertical;
+}
+
+.record-card textarea:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.access-note {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+.empty-state {
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 40px 0;
+  text-align: center;
+}
+
+/* ===========================================================
+   Budget page
+   =========================================================== */
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.month-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 140px;
+  text-align: center;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.summary-card .summary-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.summary-card .summary-value {
+  font-family: var(--font-display);
+  font-size: 24px;
+}
+
+.summary-value.positive { color: var(--accent); }
+.summary-value.negative { color: var(--danger); }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  margin: 0;
+}
+
+.inline-input {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  margin-right: 8px;
+}
+
+.planned-input {
+  width: 110px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.planned-input:disabled {
+  color: var(--text-muted);
+  border-color: transparent;
+  background: transparent;
+}
+
+.amount-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.remaining-negative { color: var(--danger); }
+.remaining-positive { color: var(--accent); }
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 4px 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.icon-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.expense-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.6fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.expense-form .field {
+  margin-bottom: 0;
+}
+
+.expense-form select,
+.expense-form input {
+  width: 100%;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.expense-form .btn {
+  height: fit-content;
+}
+
+@media (max-width: 760px) {
+  .expense-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Danger zone (delete account / delete category) ---------- */
+
+.danger-panel {
+  border-color: rgba(224, 122, 95, 0.4);
+}
+
+.danger-btn {
+  color: var(--danger);
+  border-color: rgba(224, 122, 95, 0.4);
+}
+
+.danger-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: rgba(224, 122, 95, 0.08);
+}
+
+.danger-btn-solid {
+  background: var(--danger);
+  color: #2a0d07;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.danger-btn-solid:hover {
+  background: #e88f76;
+}
+
+/* ---------- "Whose data is this" banner ---------- */
+
+.viewing-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(212, 168, 83, 0.08);
+  border: 1px solid rgba(212, 168, 83, 0.35);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.viewing-banner .viewing-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.viewing-banner .viewing-name {
+  font-weight: 600;
+}
+
+.viewing-banner .viewing-email {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===========================================================
+   Visual depth & motion polish
+   =========================================================== */
+
+.receipt-card,
+.panel,
+.member-card,
+.summary-card,
+.record-card {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.member-card,
+.summary-card,
+.panel {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
+  border-color: var(--accent-dim);
+}
+
+.summary-card:hover {
+  border-color: var(--border);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.topbar {
+  transition: padding 0.15s ease;
+}
+
+/* Table wrapper: lets wide tables scroll horizontally instead of
+   breaking the page layout on narrow screens. */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius);
+}
+
+.table-scroll .admin-table {
+  box-shadow: none; /* wrapper already carries the elevation via .panel */
+}
+
+#adminContent {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Comfortable minimum tap targets on all interactive controls */
+.btn-ghost,
+.icon-btn,
+.save-btn,
+.link-btn {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================================================
+   Responsive breakpoints
+   =========================================================== */
+
+/* ---- Tablet ---- */
+@media (max-width: 900px) {
+  .app-main {
+    max-width: 100%;
+    padding: 32px 24px;
+  }
+
+  .expense-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .expense-note-field {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 640px) {
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Top bar: stack into two rows — brand + user controls on row one,
+     nav links (horizontally scrollable) on row two. Keeps every page
+     usable without a hamburger menu or hidden functionality. */
+  .topbar {
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    row-gap: 10px;
+  }
+
+  .topbar-brand {
+    order: 1;
+  }
+
+  .topbar-user {
+    order: 2;
+    margin-left: auto;
+    gap: 10px;
+  }
+
+  .topbar-user .muted-note {
+    display: none; /* name text; badge + logout are enough on small screens */
+  }
+
+  .topbar-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 18px;
+    padding-bottom: 2px;
+  }
+
+  .app-main {
+    padding: 24px 16px 40px;
+  }
+
+  .app-main h1 {
+    font-size: clamp(20px, 6vw, 24px);
+  }
+
+  .app-main .lede {
+    margin-bottom: 24px;
+  }
+
+  /* Auth pages */
+  .brand-panel {
+    padding: 32px 24px;
+    min-height: 220px;
+  }
+
+  .brand-copy h1 {
+    font-size: clamp(26px, 7vw, 32px);
+  }
+
+  .ledger-lines {
+    padding: 0 24px;
+  }
+
+  .form-panel {
+    padding: 32px 20px;
+  }
+
+  .receipt-card {
+    padding: 32px 22px 24px;
+  }
+
+  /* Dashboard */
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Budget summary */
+  .summary-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .summary-card {
+    padding: 12px 14px;
+  }
+
+  .summary-card .summary-value {
+    font-size: 20px;
+  }
+
+  /* Panels */
+  .panel {
+    padding: 18px;
+  }
+
+  .panel-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #addCategoryBox {
+    display: flex !important;
+    gap: 8px;
+  }
+
+  #addCategoryBox .inline-input {
+    flex: 1;
+    margin-right: 0;
+  }
+
+  .month-nav {
+    justify-content: space-between;
+  }
+
+  .month-label {
+    min-width: auto;
+  }
+
+  .expense-form {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-note-field {
+    grid-column: auto;
+  }
+
+  /* Admin table: shrink padding so more columns stay legible before
+     the scroll container kicks in. */
+  .admin-table th,
+  .admin-table td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .grant-list {
+    max-width: 180px;
+  }
+
+  .viewing-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .summary-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================================================
+   Reports page (charts)
+   =========================================================== */
+
+.chart-container {
+  position: relative;
+  height: 320px;
+  width: 100%;
+}
+
+.chart-container-small {
+  height: 260px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .chart-container {
+    height: 260px;
+  }
+  .chart-container-small {
+    height: 220px;
+  }
+}
+
+/* ---------- Reports page section labels ---------- */
+
+.section-heading {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-warm);
+  margin: 36px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-heading:first-of-type {
+  margin-top: 0;
+}
+
+/* ===========================================================
+   Native browser controls (date picker icon, password reveal
+   icon, etc.) — tell the browser this is a dark UI so it draws
+   its own built-in icons/scrollbars in light colors instead of
+   the default dark-on-dark that disappears against our theme.
+   =========================================================== */
+
+:root {
+  color-scheme: dark;
+}
+
+/* Belt-and-braces fallback for the calendar icon specifically,
+   in case a browser ignores color-scheme for it. */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) brightness(1.4);
+  cursor: pointer;
+}
+
+/* Hide every native password-reveal/clear affordance the browser might
+   add on its own (Edge, Chrome's autofill key icon, Safari's built-in
+   eye) — we provide our own .password-toggle button instead, so the
+   native one would just show up as a confusing duplicate. */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+/* ===========================================================
+   Custom password-visibility toggle and date-field icon
+   (theme-colored, not dependent on the browser's own icon
+   rendering — fixes icons disappearing against the dark theme)
+   =========================================================== */
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.password-toggle:hover {
+  color: var(--accent);
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 1px;
+}
+
+/* Date field: hide the browser's own (often invisible) calendar
+   icon and draw our own in the theme's muted text color instead.
+   The native indicator stays in place with opacity 0 so clicking
+   it still opens the picker — only its appearance is replaced. */
+
+.date-field {
+  position: relative;
+}
+
+.date-field input[type="date"] {
+  padding-right: 38px;
+}
+
+.date-field input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 34px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.date-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}

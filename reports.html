@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports — Budget Ledger</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-brand">Budget Ledger</div>
+    <nav class="topbar-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="reports.html" id="navReports" class="active">Reports</a>
+      <a href="loans.html" id="navLoans">Loans</a>
+      <a href="income.html" id="navIncome">Income</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="topbar-user">
+      <span class="badge" id="roleBadge">…</span>
+      <button class="btn-ghost" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="viewing-banner" id="viewingBanner" style="display:none;">
+      <div class="viewing-who">
+        <span class="badge" id="viewingBadge"></span>
+        <span class="viewing-name" id="viewingName"></span>
+        <span class="viewing-email" id="viewingEmail"></span>
+      </div>
+      <span class="muted-note" id="viewingAccessNote"></span>
+    </div>
+
+    <h1>Reports</h1>
+    <p class="lede">A visual look at how your plan compares to what you've actually spent.</p>
+
+    <h2 class="section-heading">Budget</h2>
+
+    <div class="month-nav">
+      <button class="btn-ghost" id="prevMonth">← Prev</button>
+      <span class="month-label" id="monthLabel">—</span>
+      <button class="btn-ghost" id="nextMonth">Next →</button>
+    </div>
+
+    <div class="status-banner" id="statusBanner"></div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Planned vs spent by category</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="categoryBarChart"></canvas>
+      </div>
+      <p class="empty-state" id="barEmptyState" style="display:none;">No categories to chart yet.</p>
+    </section>
+
+    <div class="chart-grid">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Spending breakdown</h2>
+        </div>
+        <div class="chart-container chart-container-small">
+          <canvas id="categoryPieChart"></canvas>
+        </div>
+        <p class="empty-state" id="pieEmptyState" style="display:none;">No expenses logged this month yet.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Last 6 months</h2>
+        </div>
+        <div class="chart-container chart-container-small">
+          <canvas id="trendLineChart"></canvas>
+        </div>
+        <p class="empty-state" id="trendEmptyState" style="display:none;"></p>
+      </section>
+    </div>
+
+    <h2 class="section-heading">Income</h2>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Income by source</h2>
+      </div>
+      <div class="chart-container chart-container-small">
+        <canvas id="incomePieChart"></canvas>
+      </div>
+      <p class="empty-state" id="incomePieEmptyState" style="display:none;">No income logged this month yet.</p>
+    </section>
+
+    <h2 class="section-heading">Loans</h2>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Outstanding balance by person</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="loanBarChart"></canvas>
+      </div>
+      <p class="empty-state" id="loanBarEmptyState" style="display:none;">No outstanding loans to chart.</p>
+    </section>
+
+    <div class="chart-grid">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>You owe — by person</h2>
+        </div>
+        <div class="chart-container chart-container-small">
+          <canvas id="loanOweToChart"></canvas>
+        </div>
+        <p class="empty-state" id="loanOweToEmptyState" style="display:none;">You don't owe anyone right now.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Owed to you — by person</h2>
+        </div>
+        <div class="chart-container chart-container-small">
+          <canvas id="loanOwedFromChart"></canvas>
+        </div>
+        <p class="empty-state" id="loanOwedFromEmptyState" style="display:none;">No one owes you right now.</p>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="api-bridge.js"></script>
+<script src="ui-helpers.js"></script>
+<script src="reports.js"></script>
+</body>
+</html>

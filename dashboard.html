@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Budget Ledger</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-brand">Budget Ledger</div>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="reports.html" id="navReports">Reports</a>
+      <a href="loans.html" id="navLoans">Loans</a>
+      <a href="income.html" id="navIncome">Income</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="topbar-user">
+      <span class="badge" id="roleBadge">…</span>
+      <span id="userName" class="muted-note"></span>
+      <button class="btn-ghost" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <h1>Your budgets</h1>
+    <p class="lede" id="ledeText">Loading what you have access to…</p>
+
+    <div class="member-grid" id="memberGrid"></div>
+  </main>
+</div>
+
+<script src="api-bridge.js"></script>
+<script src="ui-helpers.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
