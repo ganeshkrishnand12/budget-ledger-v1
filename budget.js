@@ -20,6 +20,7 @@
   let currentMonth = currentMonthString();
   let currentAccessLevel = 'none';
   let categoriesCache = [];
+  let allExpensesCache = [];
   let latestIncomeTotal = 0;
   let latestSpentTotal = 0;
   let incomeAvailable = true;
@@ -88,6 +89,7 @@
       wireMonthNav();
       wireCategoryAdd();
       wireExpenseForm();
+      wireExpenseFilters();
 
       if (targetUserId !== user.id) {
         loadViewingBanner();
@@ -344,6 +346,17 @@
         return '<option value="' + c.id + '">' + escapeHtml(c.name) + '</option>';
       })
       .join('');
+
+    const filterSelect = document.getElementById('filterCategory');
+    const previousValue = filterSelect.value;
+    filterSelect.innerHTML =
+      '<option value="">All categories</option>' +
+      categoriesCache
+        .map(function (c) {
+          return '<option value="' + c.id + '">' + escapeHtml(c.name) + '</option>';
+        })
+        .join('');
+    filterSelect.value = previousValue;
   }
 
   function wireExpenseForm() {
@@ -402,11 +415,45 @@
         return res.json();
       })
       .then(function (data) {
-        renderExpenseTable(data.expenses);
+        allExpensesCache = data.expenses;
+        applyExpenseFilters();
       })
       .catch(function () {
         showBanner('Could not load expenses.', 'error');
       });
+  }
+
+  function wireExpenseFilters() {
+    ['filterDate', 'filterCategory', 'filterNote', 'filterMinAmount', 'filterMaxAmount'].forEach(function (id) {
+      document.getElementById(id).addEventListener('input', applyExpenseFilters);
+    });
+    document.getElementById('clearFiltersBtn').addEventListener('click', function () {
+      document.getElementById('filterDate').value = '';
+      document.getElementById('filterCategory').value = '';
+      document.getElementById('filterNote').value = '';
+      document.getElementById('filterMinAmount').value = '';
+      document.getElementById('filterMaxAmount').value = '';
+      applyExpenseFilters();
+    });
+  }
+
+  function applyExpenseFilters() {
+    const dateFilter = document.getElementById('filterDate').value;
+    const categoryFilter = document.getElementById('filterCategory').value;
+    const noteFilter = document.getElementById('filterNote').value.trim().toLowerCase();
+    const minAmount = parseFloat(document.getElementById('filterMinAmount').value);
+    const maxAmount = parseFloat(document.getElementById('filterMaxAmount').value);
+
+    const filtered = allExpensesCache.filter(function (exp) {
+      if (dateFilter && exp.date !== dateFilter) return false;
+      if (categoryFilter && exp.categoryId !== categoryFilter) return false;
+      if (noteFilter && !(exp.note || '').toLowerCase().includes(noteFilter)) return false;
+      if (!isNaN(minAmount) && Number(exp.amount) < minAmount) return false;
+      if (!isNaN(maxAmount) && Number(exp.amount) > maxAmount) return false;
+      return true;
+    });
+
+    renderExpenseTable(filtered);
   }
 
   function renderExpenseTable(expenses) {
@@ -415,6 +462,9 @@
     tbody.innerHTML = '';
 
     if (!expenses.length) {
+      emptyState.textContent = allExpensesCache.length
+        ? 'No entries match the current filters.'
+        : 'No expenses logged for this month yet.';
       emptyState.style.display = '';
       return;
     }

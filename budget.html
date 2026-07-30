@@ -113,6 +113,31 @@
       <div class="panel-head">
         <h2>This month's entries</h2>
       </div>
+      <div class="expense-filters" id="expenseFilters">
+        <div class="field">
+          <label for="filterDate">Date</label>
+          <input type="date" id="filterDate">
+        </div>
+        <div class="field">
+          <label for="filterCategory">Category</label>
+          <select id="filterCategory">
+            <option value="">All categories</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filterNote">Note contains</label>
+          <input type="text" id="filterNote" placeholder="Search note...">
+        </div>
+        <div class="field">
+          <label for="filterMinAmount">Min amount</label>
+          <input type="number" id="filterMinAmount" min="0" step="1" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="filterMaxAmount">Max amount</label>
+          <input type="number" id="filterMaxAmount" min="0" step="1" placeholder="No max">
+        </div>
+        <button class="btn-ghost" id="clearFiltersBtn" type="button">Clear filters</button>
+      </div>
       <div class="table-scroll">
         <table class="admin-table" id="expenseTable">
           <thead>
@@ -132,7 +157,6 @@
   </main>
 </div>
 
-<script src="api-bridge.js"></script>
 <script src="ui-helpers.js"></script>
 <script src="budget.js"></script>
 </body>
